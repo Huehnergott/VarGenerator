@@ -5,8 +5,13 @@
  */
 package vargenerator;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import vargenerator.Parser.ParserResult;
 import vargenerator.domain.MBT;
 import vargenerator.domain.Stueckliste;
 import vargenerator.domain.StueliEintrag;
@@ -14,9 +19,8 @@ import vargenerator.domain.Variante;
 import vargenerator.util.Log;
 
 /**
- * Hauptklasse für Variantengenerator.
- * Start der Generierung mit run().
- * 
+ * Hauptklasse für Variantengenerator. Start der Generierung mit run().
+ *
  * @author Huehnergott
  */
 public class VarGenerator {
@@ -37,7 +41,7 @@ public class VarGenerator {
 
     // iteriere Zeitscheiben
     for (int i = startZS; i < endZS - 1; i++) {
-      List<Variante> variantenImZeitraum = rechneVarianten(i);
+      Collection<Variante> variantenImZeitraum = rechneVarianten(i);
       Log.write("Anzahl Varianten " + variantenImZeitraum.size());
       for (Variante v : variantenImZeitraum) {
         Log.write(v.toString());
@@ -47,10 +51,11 @@ public class VarGenerator {
 
   /**
    * Berechnet alle Varianten für den Zeitraum start, start+1
+   *
    * @param start
    * @return liste aller gültigen Varianten im Zeitraum
    */
-  private List<Variante> rechneVarianten(int start) {
+  private Collection<Variante> rechneVarianten(int start) {
     int end = start + 1;
     Log.write("Rechne Varianten für Zeitraum " + stueLi.getEinsatzEntfallName(start) + " bis " + stueLi.getEinsatzEntfallName(end));
 
@@ -62,32 +67,56 @@ public class VarGenerator {
       }
     }
 
-    List<Variante> varianten = new ArrayList<>();
-    varianten.add(new Variante(this.mbt)); // leere Variante
+    HashMap<Integer, Variante> varianten = new HashMap<>();
+    Variante leer = new Variante(this.mbt);
+    varianten.put(leer.hashCode(), leer); // leere Variante
 
     // iteriere Knoten
-    List<Variante> variantenSpeicher = new ArrayList<>();
+    HashMap<Integer, Variante> variantenSpeicher = new HashMap<>();
     for (int aktuellerKnoten = stueLi.getKnotenMin(); aktuellerKnoten <= stueLi.getKnotenMax(); aktuellerKnoten++) {
+      Log.write("Rechne Knoten " + aktuellerKnoten + "/" + stueLi.getKnotenMax());
       // iteriere Einträge
       for (StueliEintrag kandidat : imZeitraum) {
         if (kandidat.getKnotenNr() == aktuellerKnoten) {
-          // iteriere die varianten
-          for (Variante v : varianten) {
-            Variante kombinierte = v.kombiniereMit(kandidat);
+          // iteriere alle vorhandenen varianten
+          for (Variante vorhandene : varianten.values()) {
+            Variante kombinierte = vorhandene.kombiniereMit(kandidat);
             if (kombinierte != null) {
-              variantenSpeicher.add(kombinierte);
+              variantenSpeicher.put(kombinierte.hashCode(), kombinierte);
             }
           }
         }
       }
       if (variantenSpeicher.isEmpty()) {
-        Log.write("Keine gültigen Kombinationen in Knoten Nr " + aktuellerKnoten);
-        return variantenSpeicher;
+        Log.write("Keine Auskombinierten für  Kombinationen in Knoten Nr " + aktuellerKnoten);
+      } else {
+        varianten.putAll(variantenSpeicher);
+        Log.write("Anzahl Varianten ist " + varianten.size());
+        variantenSpeicher = new HashMap<>();
       }
-      varianten = variantenSpeicher;
-      variantenSpeicher = new ArrayList<>();
     }
-    return varianten;
+    return varianten.values();
   }
 
+  public static void main(String[] args) {
+    if (args.length == 0) {
+      Log.write("Kein Filename angegeben. Bitte Programm starten mit: VarGenerator filename  ");
+      return;
+    }
+    String fileName = args[0];
+    try {
+      // Szenario laden
+      FileReader fr = new FileReader(fileName);
+      ParserResult result = new Parser().parse(fr);
+
+      // MBT und Stuückliste aufbauen
+      VarGenerator vg = new VarGenerator(result.mbt, result.StueLi);
+
+      // laufen lassen
+      vg.run();
+    } catch (FileNotFoundException ex) {
+      Log.write("Die angegebene Datei '" + fileName + "'wurde nicht gefunden.");
+    }
+
+  }
 }

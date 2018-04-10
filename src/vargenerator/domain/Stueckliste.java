@@ -55,7 +55,7 @@ public class Stueckliste {
 
   private void init() {
     Log.write("Initialisiere Stückliste");
-    String[] parts = aenderungsReihenfolgeText.split(" ");
+    String[] parts = aenderungsReihenfolgeText.trim().split(" ");
     aenderungsReihenfolge.addAll(Arrays.asList(parts));
     Log.write("Änderungsreihenfolge: " + aenderungsReihenfolge.toString());
   }

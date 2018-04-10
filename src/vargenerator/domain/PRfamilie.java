@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Repräsentiert eine Menge von PR Nummern zusammengefasst zu einer Familie.
  * Enthäklt hauptsächlich Hilfsfunktionen.
- * 
+ *
  * @author Huehnergott
  */
 public class PRfamilie {
@@ -22,12 +22,24 @@ public class PRfamilie {
 
   /**
    * Default ctor.
+   *
    * @param name Name der Familie z.B "LEA"
    * @param prNummern String der Nummern durch SPACE getrennt, z.b. "L0L L0R"
    */
   public PRfamilie(String name, String prNummern) {
     String[] parts = prNummern.split(" ");
     prNummer.addAll(Arrays.asList(parts));
+    this.name = name;
+  }
+
+  /**
+   * Default ctor.
+   *
+   * @param name Name der Familie z.B "LEA"
+   * @param prNummern pr Nummern als Liste
+   */
+  public PRfamilie(String name, List<String> prNummern) {
+    prNummer.addAll(prNummern);
     this.name = name;
   }
 
@@ -60,4 +72,10 @@ public class PRfamilie {
 
     return ret;
   }
+
+  @Override
+  public String toString() {
+    return name + ": " + getMembers()+"\n";
+  }
+
 }

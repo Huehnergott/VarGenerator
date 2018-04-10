@@ -57,7 +57,7 @@ public class Variante {
     ret.teGue = variantenTegue;
     return ret;
   }
-  
+
   @Override
   public String toString() {
     String hash = Integer.toHexString(hashCode());
@@ -66,8 +66,10 @@ public class Variante {
 
   @Override
   public int hashCode() {
-    int hash = 7;
-    hash = 47 * hash + Objects.hashCode(this.element);
+    int hash = 0;
+    // wir bilden hier einfach die Summe der hsashwerte der einzelnen StüLi-Elemente.
+    // Die Reihenfolge ist dann egal.
+    hash = this.element.stream().map((e) -> e.hashCode()).reduce(hash, Integer::sum);
     return hash;
   }
 
@@ -83,7 +85,7 @@ public class Variante {
       return false;
     }
     final Variante other = (Variante) obj;
-    return this.hashCode()==Objects.hashCode(other);
+    return this.hashCode() == Objects.hashCode(other);
   }
 
 }

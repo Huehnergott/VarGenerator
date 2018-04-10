@@ -7,7 +7,9 @@ package vargenerator.domain;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import vargenerator.util.Log;
 
 /**
@@ -26,6 +28,10 @@ public class MBT {
    */
   boolean checkeTegue(String teGue) {
     teGue = teGue.replace(" ", "");
+    if (teGue.length() == 0) {
+      return true;
+    }
+
     String[] terms = teGue.split("\\+");
     for (String term : terms) {
       String[] prns = term.split("/");
@@ -45,9 +51,15 @@ public class MBT {
     familie.addAll(Arrays.asList(familien));
   }
 
+  public MBT(List<PRfamilie> familien) {
+    familie.addAll(familien);
+  }
+
   public List<PRfamilie> getFamilien() {
     return familie;
   }
+
+  Map<String, PRfamilie> prnCache = new HashMap<>();
 
   /**
    * Liefert die PR familie zur PR nummer
@@ -56,9 +68,14 @@ public class MBT {
    * @return PR-Familie
    */
   public PRfamilie getFamilie(String prn) {
+    if (prnCache.containsKey(prn)) {
+      return prnCache.get(prn);
+    }
+
     for (PRfamilie f : familie) {
       int index = f.indexOf(prn);
       if (index >= 0) {
+        prnCache.put(prn, f);
         return f;
       }
     }
@@ -88,6 +105,65 @@ public class MBT {
       PRfamilie fam = getFamilie(part);
       if (!ret.contains(fam)) {
         ret.add(fam);
+      }
+    }
+    return ret;
+  }
+
+  /**
+   * Entfernt die PR-Nummern aus dem Term die NICHT zu den Familien "exclude"
+   * gehören.
+   *
+   * @param term TeGue Term
+   * @param exclude Familien die zu entfernen sind
+   *
+   * @return bereinigte Tegue mit Termen die nicht in exclude zu finden sind
+   */
+  public String entferneFamilien(String term, List<PRfamilie> exclude) {
+    String ret = "";
+
+    if ("".equals(term)) {
+      return term;
+    }
+
+    // PR Nummern sind jetzt mit Leerzeichen getrennt
+    String[] groups = term.split("\\+");
+    for (String group : groups) {
+      String[] prns = group.split("/");
+      if (prns.length > 0) {
+        PRfamilie find = getFamilie(prns[0]);
+        if (!exclude.contains(find)) {
+          ret += (ret != "" ? "+" : "") + group;
+        }
+      }
+    }
+    return ret;
+  }
+
+  /**
+   * Entfernt die PR-Nummern aus dem Term die zu den Familien "exclude" gehören.
+   *
+   * @param term TeGue Term
+   * @param exclude Familien die NICHT zu behalten sind
+   *
+   * @return bereinigte Tegue
+   */
+  public String behalteFamilien(String term, List<PRfamilie> exclude) {
+    String ret = "";
+
+    if ("".equals(term)) {
+      return term;
+    }
+
+    // PR Nummern sind jetzt mit Leerzeichen getrennt
+    String[] groups = term.split("\\+");
+    for (String group : groups) {
+      String[] prns = group.split("/");
+      if (prns.length > 0) {
+        PRfamilie find = getFamilie(prns[0]);
+        if (exclude.contains(find)) {
+          ret += (ret != "" ? "+" : "") + group;
+        }
       }
     }
     return ret;
@@ -145,20 +221,30 @@ public class MBT {
     return ret;
   }
 
+  Map<String, String> tegueCache = new HashMap<>();
+
   /**
    * Kombiniert Teilegültigkeiten tg1 und tg2 zu einer Schnittmenge.
    *
-   * @param mbt
    * @param tg1
    * @param tg2
    * @return
    */
   public String kombiniereTeGue(String tg1, String tg2) {
+    String ret = "";
+    String u1 = tg1;
+    String u2 = tg2;
+
+    if (tegueCache.containsKey(u1 + u2)) {
+      return tegueCache.get(u1 + u2);
+    }
+
+    // Sonderfälle zuerst:
     List<PRfamilie> fam1 = findeFamilien(tg1);
     List<PRfamilie> fam2 = findeFamilien(tg2);
 
     if (fam1.isEmpty() && fam2.isEmpty()) {
-      // nichts zu komnbinieren. Teilegültigkeit schränkt nicht ein
+      // nichts zu komnbinieren. Teilegültigkeit schränkt nichts ein
       return "";
     }
 
@@ -169,40 +255,57 @@ public class MBT {
       return tg1;
     }
 
-    // Normalform bilden für tg1
-    for (PRfamilie f : fam2) {
-      if (!fam1.contains(f)) {
-        tg1 = tg1 + "+" + f.getMembers();
-      }
-    }
-    // Normalform bilden für tg2
+    // Familien finden die sich schneiden:
+    List<PRfamilie> famSchnitt = new ArrayList<>();
     for (PRfamilie f : fam1) {
-      if (!fam2.contains(f)) {
-        tg2 = tg2 + "+" + f.getMembers();
+      if (fam2.contains(f)) {
+        famSchnitt.add(f);
       }
     }
 
-    // Ausmultiplizieren der Kombinationen
-    List<PRkombination> kombi1 = findeKombination(tg1);
-    List<PRkombination> kombi2 = findeKombination(tg2);
-
-    List<PRkombination> schnitt = bildeSchnittmenge(kombi1, kombi2);
-
-    if (schnitt.isEmpty()) {
-      return null;
-      // keine Überdeckung im Schnitt. Kombination ist leere Menge.
+    if (famSchnitt.isEmpty()) {
+      // keine Überschneidung, d.h. das Ergebnis ist einfach die Summe der Terme
+      return tg1 + "+" + tg2;
     }
 
-    String tegue = "";
-    for (PRkombination prk : schnitt) {
-      tegue += (tegue.length() == 0) ? prk.toString() : "+" + prk.toString();
+    // Für jede PR-Familie nicht im Schnitt ist die PRN-Terme finden und zum Ergebnis tun
+    ret += entferneFamilien(tg1, famSchnitt);
+    ret += (!"".equals(ret) ? "+" : "") + entferneFamilien(tg2, famSchnitt);
+
+    // Für jede PR-Familie im Schnitt die gemeinsamen PRN finden
+    tg1 = behalteFamilien(tg1, famSchnitt);
+    tg2 = behalteFamilien(tg2, famSchnitt);
+
+    // AUSKOMBINIEREN für alle Schnitte:
+    //Für jede PR-Familie im Schnitt die gemeinsamen PRN finden und als Term an die endgültige TeGue hängen
+    for (PRfamilie f : famSchnitt) {
+      String prnSchnitt = "";
+      List<PRfamilie> aktuell = new ArrayList<>();
+      aktuell.add(f);
+      String t1 = behalteFamilien(tg1, aktuell);
+      String t2 = behalteFamilien(tg2, aktuell);
+      String[] parts = t1.split("/");
+      for (String prn : parts) {
+        if (t2.contains(prn)) {
+          prnSchnitt = (!"".equals(prnSchnitt) ? "/" : "") + prn;
+        }
+      }
+      if (prnSchnitt.length() > 0) {
+        ret += (!"".equals(ret) ? "+" : "") + prnSchnitt;
+      } else {
+        // leerer Schnitt in der PR-Familie -> ungültige Kombination
+        return null;
+      }
     }
 
-    if (schnitt.size() > 1) {
-      Log.write("WARNUNG ! Zusammenfassen fehlt noch.");
-    }
-    // TODO: zusammenfassen!
-    return tegue;
+    tegueCache.put(u1 + u2, ret);
+    tegueCache.put(u2 + u1, ret);
+    return ret;
+  }
+
+  @Override
+  public String toString() {
+    return "PRfamilien=" + familie.toString();
   }
 
 }
