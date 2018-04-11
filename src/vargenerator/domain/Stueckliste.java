@@ -27,6 +27,11 @@ public class Stueckliste {
   private int knotenMin = Integer.MAX_VALUE;
   private int knotenMax = 0;
 
+  /**
+   * Neuen Eintrag in StüLi anlegen und auf Gültigkeit gegen MBT testen.
+   * @param neu neuer Eintrag
+   * @return neuer Eintrag oder NULL falls nicht eingetragen wurde
+   */
   public List<StueliEintrag> add(StueliEintrag neu) {
     boolean gueltig = checkeEintrag(neu);
     if (gueltig) {
@@ -38,6 +43,11 @@ public class Stueckliste {
     return null;
   }
 
+  /**
+   * Eintrag in Zeile "index" ermitteln.
+   * @param index Zeile
+   * @return Eintrag
+   */
   public StueliEintrag getEintrag(int index) {
     return this.eintraege.get(index);
   }
@@ -60,10 +70,20 @@ public class Stueckliste {
     Log.write("Änderungsreihenfolge: " + aenderungsReihenfolge.toString());
   }
 
+  /**
+   * Nummer der letzten Zeitscheibe ermitteln.
+   * 
+   * @return Nummer der letzten Zeitscheibe
+   */
   public int zeitscheibeMax() {
     return aenderungsReihenfolge.size();
   }
 
+  /**
+   * Eintrag gegen, Einsatz Entfall und Teilegültigkeit checken.
+   * @param eintrag
+   * @return 
+   */
   private boolean checkeEintrag(StueliEintrag eintrag) {
     Log.write("checke neuen Eintrag");
 

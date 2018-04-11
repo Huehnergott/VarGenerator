@@ -33,6 +33,9 @@ public class VarGenerator {
     this.stueLi = stueLi;
   }
 
+  /**
+   * Generierung starten. Parameter werden im Konstruktor übergeben.
+   */
   public void run() {
     Log.write("VARIANTEN-GENERATOR start");
 
@@ -43,16 +46,13 @@ public class VarGenerator {
     for (int i = startZS; i < endZS - 1; i++) {
       Collection<Variante> variantenImZeitraum = rechneVarianten(i);
       Log.write("Anzahl Varianten " + variantenImZeitraum.size());
-      for (Variante v : variantenImZeitraum) {
-        Log.write(v.toString());
-      }
     }
   }
 
   /**
    * Berechnet alle Varianten für den Zeitraum start, start+1
    *
-   * @param start
+   * @param start Zeitraum
    * @return liste aller gültigen Varianten im Zeitraum
    */
   private Collection<Variante> rechneVarianten(int start) {
@@ -100,7 +100,7 @@ public class VarGenerator {
 
   public static void main(String[] args) {
     if (args.length == 0) {
-      Log.write("Kein Filename angegeben. Bitte Programm starten mit: VarGenerator filename  ");
+      Log.write("Kein Filename angegeben. Bitte Programm starten mit: VarGenerator filename");
       return;
     }
     String fileName = args[0];

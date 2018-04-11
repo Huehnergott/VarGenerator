@@ -144,6 +144,12 @@ class Parser {
     }
   }
 
+  /**
+   * Eintrag der Form "Knoten;Teilegültigkeit;Einsatz;Entfall;Teilenummer;Kurztext;..." einlesen
+   * 
+   * @param line
+   * @param ret 
+   */
   private void parseStueLiEintrag(String line, ParserResult ret) {
     String[] parts = line.split(";");
     String Knoten = parts[0].trim();
@@ -165,6 +171,12 @@ class Parser {
     ret.eintraege.add(neu);
   }
 
+  /**
+   * Zeitscheiben aus den Stuecklisten-Einträgen (Einsatz/Entfall) bilden.
+   * 
+   * @param ret
+   * @return Terminschlüssel in sortierter Reihenfolge
+   */
   private String bildeZeitscheiben(ParserResult ret) {
     // Zeitscheiben bilden aus Stuecklisteneintraegen
     String zeiten = "";

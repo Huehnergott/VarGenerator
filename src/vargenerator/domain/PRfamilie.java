@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * Repräsentiert eine Menge von PR Nummern zusammengefasst zu einer Familie.
- * Enthäklt hauptsächlich Hilfsfunktionen.
+ * Enthält hauptsächlich Hilfsfunktionen.
  *
  * @author Huehnergott
  */
@@ -60,7 +60,7 @@ public class PRfamilie {
   }
 
   /**
-   * Liefert alle PR-Nummern in der Form PR1/PR2/.../PRn
+   * Liefert alle PR-Nummern der Familie in der Form PR1/PR2/.../PRn
    *
    * @return PR1/PR2/.../PRn
    */
