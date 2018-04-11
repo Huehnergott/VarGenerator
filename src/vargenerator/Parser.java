@@ -42,7 +42,7 @@ class Parser {
 
     public MBT mbt;
     public Stueckliste StueLi;
-    public String zeiten;
+    public String zeiten = "";
 
     private final Map<String, List<String>> prList;
     private final Map<String, Integer> knotenMap;
@@ -57,6 +57,7 @@ class Parser {
   private final int MODE_FIND_KEYWORD = 0;
   private final int MODE_PR_DEFINITION = 1;
   private final int MODE_STUECKLISTE = 2;
+  private final int MODE_ZEITSCHEIBE = 3;
 
   /**
    * Liest die Datei ein und erzeugt die benötigten Daten für ein Szenario.
@@ -93,12 +94,20 @@ class Parser {
             }
             break;
           case MODE_PR_DEFINITION:
-            if (!"STUECKLISTE".equals(line)) {
+            if (!"ZEITSCHEIBEN".equals(line)) {
               parsePRNummer(line, ret);
+            } else {
+              mode = MODE_ZEITSCHEIBE;
+            }
+            break;
+          case MODE_ZEITSCHEIBE: {
+            if (!"STUECKLISTE".equals(line)) {
+              parseZeitschluessel(line, ret);
             } else {
               mode = MODE_STUECKLISTE;
             }
             break;
+          }
           case MODE_STUECKLISTE: {
             parseStueLiEintrag(line, ret);
           }
@@ -145,10 +154,11 @@ class Parser {
   }
 
   /**
-   * Eintrag der Form "Knoten;Teilegültigkeit;Einsatz;Entfall;Teilenummer;Kurztext;..." einlesen
-   * 
+   * Eintrag der Form
+   * "Knoten;Teilegültigkeit;Einsatz;Entfall;Teilenummer;Kurztext;..." einlesen
+   *
    * @param line
-   * @param ret 
+   * @param ret
    */
   private void parseStueLiEintrag(String line, ParserResult ret) {
     String[] parts = line.split(";");
@@ -172,25 +182,38 @@ class Parser {
   }
 
   /**
+   * Neue Zeit in Liste einfügen.
+   *
+   * @param line
+   * @param ret
+   */
+  private void parseZeitschluessel(String line, ParserResult ret) {
+    String zeit = line.trim();
+    ret.zeiten += ("".equals(ret.zeiten) ? "" : " ") + zeit;
+  }
+
+  /**
    * Zeitscheiben aus den Stuecklisten-Einträgen (Einsatz/Entfall) bilden.
-   * 
+   *
    * @param ret
    * @return Terminschlüssel in sortierter Reihenfolge
    */
   private String bildeZeitscheiben(ParserResult ret) {
     // Zeitscheiben bilden aus Stuecklisteneintraegen
-    String zeiten = "";
+    String zeiten = ret.zeiten;
     for (StueliEintrag sle : ret.eintraege) {
       String einsatz = sle.getEinsatz();
       String entfall = sle.getEntfall();
       // checke einsatz
       if (!zeiten.contains(einsatz)) {
         zeiten += " " + einsatz;
+        Log.write(zeiten);
       }
       // checke entfall
       if (entfall.length() > 0) {
         if (!zeiten.contains(entfall)) {
           zeiten += " " + entfall;
+          Log.write(zeiten);
         }
 
         // checke Reihenfolge
@@ -202,9 +225,9 @@ class Parser {
           zeiten = zeiten.replaceAll(entfall, einsatz);
           zeiten = zeiten.replaceAll("swap", entfall);
           Log.write("swap " + einsatz + " " + entfall);
+          Log.write(zeiten);
         }
       }
-      Log.write(zeiten);
     }
     return zeiten;
   }

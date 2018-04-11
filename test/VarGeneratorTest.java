@@ -64,7 +64,7 @@ public class VarGeneratorTest {
     stueLi.add(new StueliEintrag(2, "MP3", "", "IC1/IC2", "Scheibenwischer KI v3"));
     stueLi.add(new StueliEintrag(2, "MP4", "", "IC2", "Scheibenwischer KI plus"));
 
-    VarGenerator vg = new VarGenerator(mbt, stueLi);
+    VarGenerator vg = new VarGenerator(mbt, stueLi, true);
 
     vg.run();
   }

@@ -27,10 +27,12 @@ public class VarGenerator {
 
   private final Stueckliste stueLi;
   private final MBT mbt;
+  private final boolean verbose;
 
-  public VarGenerator(MBT mbt, Stueckliste stueLi) {
+  public VarGenerator(MBT mbt, Stueckliste stueLi, boolean verbose_mode) {
     this.mbt = mbt;
     this.stueLi = stueLi;
+    this.verbose = verbose_mode;
   }
 
   /**
@@ -69,7 +71,8 @@ public class VarGenerator {
 
     HashMap<Integer, Variante> varianten = new HashMap<>();
     Variante leer = new Variante(this.mbt);
-    varianten.put(leer.hashCode(), leer); // leere Variante
+    leer = leer.kombiniereMit(stueLi.getEintrag(0));
+    varianten.put(leer.hashCode(), leer); // leere Variante mit Grundknoten
 
     // iteriere Knoten
     HashMap<Integer, Variante> variantenSpeicher = new HashMap<>();
@@ -91,6 +94,11 @@ public class VarGenerator {
         Log.write("Keine Auskombinierten für  Kombinationen in Knoten Nr " + aktuellerKnoten);
       } else {
         varianten.putAll(variantenSpeicher);
+        if (this.verbose) {
+          for (Variante v : varianten.values()) {
+            Log.write(v.toString());
+          }
+        }
         Log.write("Anzahl Varianten ist " + varianten.size());
         variantenSpeicher = new HashMap<>();
       }
@@ -103,6 +111,13 @@ public class VarGenerator {
       Log.write("Kein Filename angegeben. Bitte Programm starten mit: VarGenerator filename");
       return;
     }
+    boolean verbose_mode = false;
+    for (String arg : args) {
+      if ("-v".equals(arg)) {
+        verbose_mode = true;
+      }
+    }
+
     String fileName = args[0];
     try {
       // Szenario laden
@@ -110,7 +125,7 @@ public class VarGenerator {
       ParserResult result = new Parser().parse(fr);
 
       // MBT und Stuückliste aufbauen
-      VarGenerator vg = new VarGenerator(result.mbt, result.StueLi);
+      VarGenerator vg = new VarGenerator(result.mbt, result.StueLi, verbose_mode);
 
       // laufen lassen
       vg.run();

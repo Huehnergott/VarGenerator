@@ -20,7 +20,11 @@ Dem Variantengenerator wurde ein Parser spendiert, mit dem man Szenario-Files ei
 Beispiel-Daten sind in github.com nicht hinterlegt. Bitte schickt mir eine email für Testdaten (Szenario-File).
 
 Varianten-Generierung startet man mit *java.exe VarGenerator.jar szenario.txt* , z.B auf der Console.
-Der Einfachheit halber kann auch im Ordner *Binary* die generator.bat verwendet werden. Man kann per Drag und Drop im Explorer das Szenario-File auf die .bat ziehen und die Generierung startet ;-) 
+Der Einfachheit halber kann auch im Ordner *Binary* die generator.bat verwendet werden. Dazu das Szenario in den gleichen Ordner kopieren. Nun kann man per Drag und Drop im Explorer das Szenario-File auf die .bat ziehen und die Generierung startet ;-) 
+
+Vorraussetzungen
+--------------------
+Java Runtime muss installiert sein.
 
 
 
