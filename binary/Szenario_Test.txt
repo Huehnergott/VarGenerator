@@ -1,0 +1,78 @@
+--------------------------------------------------------------------
+-- VARIANTEN-GENERATOR (Demonstration)
+--
+-- Hinweise:
+-- 
+-- Kommentare fangen mit -- an und gehen dann über die ganze Zeile.
+-- Leerzeilen werden überlesen
+-- Tab geht nicht als Ersatz für SPACE. 
+-- Gross/Kleinschreibung wird unterschieden. Überall!
+-- Trennzeichen ist das Semikolon, so wie es von Excel mit der Option 
+-- csv abgespeichert wird. (siehe unten)
+---------------------------------------------------------------------
+
+-- Als Erstes die Definition der PR Nummern und Familien:
+-- Der Bereich dafür fängt mit dem  Schlüsselwort PR-DEFINITION an.
+-- Erst kommt die PR-Nummer, dann die PR-Familie.  Alles was dahinter steht wird überlesen.
+--------------------------------------------------------------------------------------------------
+
+PR-DEFINITION
+
+NORMAL;PIZZA;Hier steht ein Kommentar
+EXTRA;PIZZA;Hier steht ein Kommentar
+BILLIG;PIZZA;Hier steht ein Kommentar
+
+OHNE_TEIG;TEIG;Hier steht ein Kommentar
+MIT_TEIG;TEIG;Hier steht ein Kommentar
+
+OHNE_KAESE;KAESE;Hier steht ein Kommentar
+MIT_KAESE;KAESE;Hier steht ein Kommentar
+
+OHNE_WURST;WURST;Hier steht ein Kommentar
+MIT_WURST;WURST;Hier steht ein Kommentar
+
+LIEFERUNG;BESTELLART;Hier steht ein Kommentar
+KEINE_LIEFERUNG;BESTELLART;Hier steht ein Kommentar
+
+----------------------------------------------------------
+-- Dann die Definition der Zeiten.
+-- Hier kann die Reihenfolge festgelegt werden.
+-- unbekannte Zeiten werden aus der Stückliste ergänzt. Allerdings ist dann die Reihenfolge aus Einsatz/Entfall abgeleitet-
+---------------------------------------------------
+ZEITSCHEIBEN
+
+MO
+DI
+MI
+DO
+FR
+SA
+SO
+
+--------------------------------------------------------------------------------------------------
+-- Die Stückliste folgt als nächstes. Die Einträge werden vor der Variantenberechnung
+-- auf Gültigkeit der PR-Nummern (von oben) überprüft.
+--
+-- Format ist : Knotennummer (eindeutige Zeichenfolge); Teilegültigkeit; Einsatzschlüssel; Entfallschlüssel; Materialnummer/Teilenummer; Beschreibung...
+-- Spalten nach Beschreibung werden überlesen.
+-- Keywort für Beginn der Stückliste ist: STUECKLISTE
+--------------------------------------------------------------------------------------------------
+
+STUECKLISTE
+
+KNOTEN_0;;MO;SO;Pizza; mit Tomatensosse
+KNOTEN_1_TEIGE;MIT_TEIG;SA;SO;Käserand 28cm; Extra-Teig mit Käse im Rand (nur am WE)
+KNOTEN_1_TEIGE;MIT_TEIG;FR;SO;Extradünn 35cm; Teig besonders dünn ausgerollt 
+KNOTEN_2_KÄSE;MIT_KAESE;MO;SO;Standard-Käse; Emmentaler oder so
+KNOTEN_2_KÄSE;NORMAL/EXTRA+MIT_KAESE;MO;SO;Standard-Käse extra viel; viel Emmentaler
+KNOTEN_2_KÄSE;NORMAL/BILLIG+MIT_KAESE;MO;SO;Analog-Kaese; eigentlich gar kein richtiger Käse
+KNOTEN_3_WURST;MIT_WURST;MO;SO;Salami; Standard Salami
+KNOTEN_3_WURST;EXTRA+MIT_WURST;MO;SO;Salami scharf; Standard Salami
+KNOTEN_4_PILZE;NORMAL/BILLIG;MO;SO;Pilze; Standard Belag
+KNOTEN_4_PILZE;EXTRA/NORMAL;MO;SO;frische Pilze; paar frische Steinpilze
+KNOTEN_5_PAPRIKA;;MO;SO;frische Paprika; nicht aus dem Glas
+KNOTEN_6_EXTRAS;EXTRA/NORMAL+KEINE_LIEFERUNG;FR;SO;Rucola; immer frisch vom Markt
+KNOTEN_6_EXTRAS;EXTRA/NORMAL+KEINE_LIEFERUNG;MO;SO;Pizza-Sosse extra; delikat
+
+
+
