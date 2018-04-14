@@ -221,6 +221,9 @@ public class MBT {
     return ret;
   }
 
+  /**
+   * Cache für Teilegültigkeit
+   */
   Map<String, String> tegueCache = new HashMap<>();
 
   /**
@@ -292,6 +295,7 @@ public class MBT {
       }
       if (prnSchnitt.length() > 0) {
         ret += (!"".equals(ret) ? "+" : "") + prnSchnitt;
+        ret = ret.replace("++", "+");
       } else {
         // leerer Schnitt in der PR-Familie -> ungültige Kombination
         return null;

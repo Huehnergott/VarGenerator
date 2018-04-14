@@ -88,4 +88,21 @@ public class Variante {
     return this.hashCode() == Objects.hashCode(other);
   }
 
+  public String getName() {
+    String hash = Integer.toHexString(hashCode());
+    return hash;
+  }
+
+  public String getTegue() {
+    return this.teGue;
+  }
+
+  public String getTeileListe() {
+    String ret = "";
+    for (StueliEintrag e : element) {
+      ret += (("".equals(ret)) ? "" : ",") + e.getTeileNr();
+    }
+    return ret;
+  }
+
 }

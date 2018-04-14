@@ -1,2 +1,2 @@
-java.exe -jar VarGenerator.jar %1 -v
+java.exe -jar VarGenerator.jar %1 -v -h
 pause >nul

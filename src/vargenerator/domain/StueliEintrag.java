@@ -8,8 +8,9 @@ package vargenerator.domain;
 import java.util.Objects;
 
 /**
- * Repräsentiert einen Eintrag in die Teileliste mit den benötigten Eigenschaften für Variantenrechnung.
- * 
+ * Repräsentiert einen Eintrag in die Teileliste mit den benötigten
+ * Eigenschaften für Variantenrechnung.
+ *
  * @author Huehnergott
  */
 public class StueliEintrag {
@@ -19,16 +20,18 @@ public class StueliEintrag {
   private final String Entfall;
   private final String TeGue;
   private final String TeileNr;
+  private final String Bemerkung;
 
   private int einsatzZeitscheibe = 0;
   private int entfallZeitscheibe = Integer.MAX_VALUE;
 
-  public StueliEintrag(int KnotenNr, String Einsatz, String Entfall, String TeGue, String TeileNr) {
+  public StueliEintrag(int KnotenNr, String Einsatz, String Entfall, String TeGue, String TeileNr, String Bemerkung) {
     this.KnotenNr = KnotenNr;
     this.Einsatz = Einsatz;
     this.Entfall = Entfall;
     this.TeGue = TeGue;
     this.TeileNr = TeileNr;
+    this.Bemerkung = Bemerkung;
   }
 
   public void setEinsatzZeitscheibe(int einsatzZeitscheibe) {
@@ -59,6 +62,10 @@ public class StueliEintrag {
     return TeileNr;
   }
 
+  public String getBemerkung() {
+    return Bemerkung;
+  }
+
   public int getEinsatzZeitscheibe() {
     return einsatzZeitscheibe;
   }
@@ -69,7 +76,7 @@ public class StueliEintrag {
 
   @Override
   public String toString() {
-    return "Teil{" + "KNr " + KnotenNr + "," + TeileNr + ", von " + Einsatz + ", bis " + Entfall + ", TeGu =" + TeGue +  "}";
+    return "Teil{" + "KNr " + KnotenNr + "," + TeileNr + ", von " + Einsatz + ", bis " + Entfall + ", TeGu =" + TeGue + "}";
   }
 
   @Override
@@ -78,7 +85,7 @@ public class StueliEintrag {
     hash = 43 * hash + this.KnotenNr;
     hash = 43 * hash + Objects.hashCode(this.TeileNr);
     return hash;
-  }  
+  }
 
   @Override
   public boolean equals(Object obj) {
@@ -100,5 +107,5 @@ public class StueliEintrag {
     }
     return true;
   }
-  
+
 }

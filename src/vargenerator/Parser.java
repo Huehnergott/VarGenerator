@@ -166,7 +166,8 @@ class Parser {
     String Tegue = parts[1].trim();
     String Einsatz = parts[2].trim();
     String Entfall = parts[3].trim();
-    String TeileNr = parts[4].trim() + "(" + parts[5].trim() + ")";
+    String TeileNr = parts[4].trim();
+    String Kommentar = parts[5].trim();
 
     int knotenNr = ret.knotenMap.size();
     if (ret.knotenMap.containsKey(Knoten)) {
@@ -177,7 +178,7 @@ class Parser {
     if (Tegue.startsWith("+")) {
       Tegue = Tegue.substring(1, Tegue.length());
     }
-    StueliEintrag neu = new StueliEintrag(knotenNr, Einsatz, Entfall, Tegue, TeileNr);
+    StueliEintrag neu = new StueliEintrag(knotenNr, Einsatz, Entfall, Tegue, TeileNr,Kommentar);
     ret.eintraege.add(neu);
   }
 
@@ -229,6 +230,7 @@ class Parser {
         }
       }
     }
+    zeiten += " inf";
     return zeiten;
   }
 }

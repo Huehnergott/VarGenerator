@@ -37,7 +37,7 @@ KEINE_LIEFERUNG;BESTELLART;Hier steht ein Kommentar
 ----------------------------------------------------------
 -- Dann die Definition der Zeiten.
 -- Hier kann die Reihenfolge festgelegt werden.
--- unbekannte Zeiten werden aus der Stückliste ergänzt. Allerdings ist dann die Reihenfolge aus Einsatz/Entfall abgeleitet-
+-- unbekannte Zeiten werden aus der Stückliste ergänzt. Allerdings ist dann die Reihenfolge aus Einsatz/Entfall abgeleitet und kann falsch sein.
 ---------------------------------------------------
 ZEITSCHEIBEN
 
@@ -60,19 +60,19 @@ SO
 
 STUECKLISTE
 
-KNOTEN_0;;MO;SO;Pizza; mit Tomatensosse
-KNOTEN_1_TEIGE;MIT_TEIG;SA;SO;Käserand 28cm; Extra-Teig mit Käse im Rand (nur am WE)
-KNOTEN_1_TEIGE;MIT_TEIG;FR;SO;Extradünn 35cm; Teig besonders dünn ausgerollt 
-KNOTEN_2_KÄSE;MIT_KAESE;MO;SO;Standard-Käse; Emmentaler oder so
-KNOTEN_2_KÄSE;NORMAL/EXTRA+MIT_KAESE;MO;SO;Standard-Käse extra viel; viel Emmentaler
-KNOTEN_2_KÄSE;NORMAL/BILLIG+MIT_KAESE;MO;SO;Analog-Kaese; eigentlich gar kein richtiger Käse
-KNOTEN_3_WURST;MIT_WURST;MO;SO;Salami; Standard Salami
-KNOTEN_3_WURST;EXTRA+MIT_WURST;MO;SO;Salami scharf; Standard Salami
-KNOTEN_4_PILZE;NORMAL/BILLIG;MO;SO;Pilze; Standard Belag
-KNOTEN_4_PILZE;EXTRA/NORMAL;MO;SO;frische Pilze; paar frische Steinpilze
-KNOTEN_5_PAPRIKA;;MO;SO;frische Paprika; nicht aus dem Glas
-KNOTEN_6_EXTRAS;EXTRA/NORMAL+KEINE_LIEFERUNG;FR;SO;Rucola; immer frisch vom Markt
-KNOTEN_6_EXTRAS;EXTRA/NORMAL+KEINE_LIEFERUNG;MO;SO;Pizza-Sosse extra; delikat
+KNOTEN_0;;MO;;Pizza; mit Tomatensosse
+KNOTEN_1_TEIGE;MIT_TEIG;SA;;Käserand 28cm; Extra-Teig mit Käse im Rand (nur am WE)
+KNOTEN_1_TEIGE;MIT_TEIG+EXTRA;FR;;Extradünn 35cm; Teig besonders dünn ausgerollt 
+KNOTEN_2_KÄSE;MIT_KAESE;MO;;Standard-Käse; Emmentaler oder so
+KNOTEN_2_KÄSE;NORMAL/EXTRA+MIT_KAESE;MO;;Standard-Käse extra viel; viel Emmentaler
+KNOTEN_2_KÄSE;NORMAL/BILLIG+MIT_KAESE;MO;;Analog-Kaese; eigentlich gar kein richtiger Käse
+KNOTEN_3_WURST;MIT_WURST;MO;;Salami; Standard Salami
+KNOTEN_3_WURST;EXTRA+MIT_WURST;MO;;Salami scharf; Sizilianische Salami extra scharf
+KNOTEN_4_PILZE;NORMAL/BILLIG;MO;;Pilze; Standard Belag
+KNOTEN_4_PILZE;EXTRA/NORMAL;MO;;frische Pilze; paar frische Steinpilze
+KNOTEN_5_PAPRIKA;;MO;;frische Paprika; nicht aus dem Glas
+KNOTEN_6_EXTRAS;EXTRA/NORMAL+KEINE_LIEFERUNG;FR;SO;Rucola; immer Freitags frisch vom Markt
+KNOTEN_6_EXTRAS;EXTRA/NORMAL+KEINE_LIEFERUNG;MO;;Pizza-Sosse extra; delikat
 
 
 

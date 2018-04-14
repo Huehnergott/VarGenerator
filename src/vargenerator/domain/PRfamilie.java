@@ -75,7 +75,11 @@ public class PRfamilie {
 
   @Override
   public String toString() {
-    return name + ": " + getMembers()+"\n";
+    return name + ": " + getMembers() + "\n";
+  }
+
+  public String getName() {
+    return this.name;
   }
 
 }
