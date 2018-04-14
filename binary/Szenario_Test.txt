@@ -61,11 +61,11 @@ SO
 STUECKLISTE
 
 KNOTEN_0;;MO;;Pizza; mit Tomatensosse
-KNOTEN_1_TEIGE;MIT_TEIG;SA;;Käserand 28cm; Extra-Teig mit Käse im Rand (nur am WE)
+KNOTEN_1_TEIGE;MIT_TEIG;SA;;Kaeserand 28cm; Extra-Teig mit Kaese im Rand (nur am WE)
 KNOTEN_1_TEIGE;MIT_TEIG+EXTRA;FR;;Extradünn 35cm; Teig besonders dünn ausgerollt 
-KNOTEN_2_KÄSE;MIT_KAESE;MO;;Standard-Käse; Emmentaler oder so
-KNOTEN_2_KÄSE;NORMAL/EXTRA+MIT_KAESE;MO;;Standard-Käse extra viel; viel Emmentaler
-KNOTEN_2_KÄSE;NORMAL/BILLIG+MIT_KAESE;MO;;Analog-Kaese; eigentlich gar kein richtiger Käse
+KNOTEN_2_KAESE;MIT_KAESE;MO;;Standard-Kaese; Emmentaler oder so
+KNOTEN_2_KAESE;NORMAL/EXTRA+MIT_KAESE;MO;;Kaese extra viel; viel Emmentaler
+KNOTEN_2_KAESE;NORMAL/BILLIG+MIT_KAESE;MO;;Analog-Kaese; eigentlich gar kein richtiger Kaese
 KNOTEN_3_WURST;MIT_WURST;MO;;Salami; Standard Salami
 KNOTEN_3_WURST;EXTRA+MIT_WURST;MO;;Salami scharf; Sizilianische Salami extra scharf
 KNOTEN_4_PILZE;NORMAL/BILLIG;MO;;Pilze; Standard Belag
