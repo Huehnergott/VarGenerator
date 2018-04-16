@@ -62,7 +62,7 @@ STUECKLISTE
 
 KNOTEN_0;;MO;;Pizza; mit Tomatensosse
 KNOTEN_1_TEIGE;MIT_TEIG;SA;;Kaeserand 28cm; Extra-Teig mit Kaese im Rand (nur am WE)
-KNOTEN_1_TEIGE;MIT_TEIG+EXTRA;FR;;Extradünn 35cm; Teig besonders dünn ausgerollt 
+KNOTEN_1_TEIGE;MIT_TEIG+EXTRA;FR;;Extradünn 35cm; Teig besonders duenn ausgerollt 
 KNOTEN_2_KAESE;MIT_KAESE;MO;;Standard-Kaese; Emmentaler oder so
 KNOTEN_2_KAESE;NORMAL/EXTRA+MIT_KAESE;MO;;Kaese extra viel; viel Emmentaler
 KNOTEN_2_KAESE;NORMAL/BILLIG+MIT_KAESE;MO;;Analog-Kaese; eigentlich gar kein richtiger Kaese
@@ -72,7 +72,7 @@ KNOTEN_4_PILZE;NORMAL/BILLIG;MO;;Pilze; Standard Belag
 KNOTEN_4_PILZE;EXTRA/NORMAL;MO;;frische Pilze; paar frische Steinpilze
 KNOTEN_5_PAPRIKA;;MO;;frische Paprika; nicht aus dem Glas
 KNOTEN_6_EXTRAS;EXTRA/NORMAL+KEINE_LIEFERUNG;FR;SO;Rucola; immer Freitags frisch vom Markt
-KNOTEN_6_EXTRAS;EXTRA/NORMAL+KEINE_LIEFERUNG;MO;;Pizza-Sosse extra; delikat
+KNOTEN_6_EXTRAS;EXTRA/NORMAL+KEINE_LIEFERUNG;MO;;Pizza-Sosse extra; sehr delikat
 
 
 
