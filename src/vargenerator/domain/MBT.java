@@ -155,7 +155,6 @@ public class MBT {
       return term;
     }
 
-    // PR Nummern sind jetzt mit Leerzeichen getrennt
     String[] groups = term.split("\\+");
     for (String group : groups) {
       String[] prns = group.split("/");
